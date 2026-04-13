@@ -4,24 +4,21 @@ float G[10][10];
 float V[10];
 float I[10];
 
-void initialization(int n){
-    for(int i=0; i<n; i++){
-        for( int j=0; j<n; j++){
-            G[i][j] = 0;
-        }
-    }
-}
 
 int main() {
 
-    int r, n, n1, n2;
-    float R, conductance;
+    int r, n, n1, n2, c, i1, i2;
+    float R, conductance, current;
 
     printf("Nodal Analysis Circuit Solver\n");
 
     printf("Enter number of nodes (excluding ground): ");
     scanf("%d", &n);
-    initialization(n);
+    for(int i=0; i<n; i++){
+        for( int j=0; j<n; j++){
+            G[i][j] = 0;
+        }
+    }
 
     printf("Enter number of resistors: ");
     scanf("%d", &r);
@@ -63,6 +60,36 @@ int main() {
         }
         printf("\n");
     }
+
+    printf("\nEnter number of current sources: ");
+    scanf("%d", &c);
+
+    for(int k = 0; k < c; k++){
+    printf("\nCurrent Source %d:\n", k+1);
+
+    printf("Enter node from (source): ");
+    scanf("%d", &i1);
+
+    printf("Enter node to (destination): ");
+    scanf("%d", &i2);
+
+    printf("Enter current value: ");
+    scanf("%f", &current);
+
+        if(i1 != 0){
+        I[i1-1] -= current;
+    }
+
+    if(i2 != 0){
+        I[i2-1] += current;
+    }
+}
+
+printf("\nCurrent Vector (I):\n");
+
+for(int i = 0; i < n; i++){
+    printf("%.2f\n", I[i]);
+}
 
 
     return 0;
