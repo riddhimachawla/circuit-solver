@@ -4,6 +4,39 @@ float G[10][10];
 float V[10];
 float I[10];
 
+void gaussianElimination(int n){
+    float A[10][11]; // augmented matrix
+
+    // Build augmented matrix [G | I]
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            A[i][j] = G[i][j];
+        }
+        A[i][n] = I[i];
+    }
+
+    // Forward Elimination
+    for(int k = 0; k < n - 1; k++){
+        for(int i = k + 1; i < n; i++){
+            float factor = A[i][k] / A[k][k];
+
+            for(int j = k; j <= n; j++){
+                A[i][j] -= factor * A[k][j];
+            }
+        }
+    }
+
+    // Back Substitution
+    for(int i = n - 1; i >= 0; i--){
+        float sum = 0;
+
+        for(int j = i + 1; j < n; j++){
+            sum += A[i][j] * V[j];
+        }
+
+        V[i] = (A[i][n] - sum) / A[i][i];
+    }
+}
 
 int main() {
 
@@ -90,6 +123,16 @@ printf("\nCurrent Vector (I):\n");
 for(int i = 0; i < n; i++){
     printf("%.2f\n", I[i]);
 }
+
+gaussianElimination(n);
+
+    // Print Node Voltages
+    printf("\nNode Voltages:\n");
+    for(int i = 0; i < n; i++){
+        printf("V%d = %.2f V\n", i + 1, V[i]);
+    }
+
+
 
 
     return 0;
